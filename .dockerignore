@@ -1,0 +1,6 @@
+README.md
+LICENSE
+k8s/
+.gitignore
+docker-compose.yml
+todos/migrations/
