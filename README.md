@@ -30,6 +30,8 @@ $ python manage.py createsuperuser
 That was pretty simple, right? Now let's make the App live. We just need to start the server now and then we can start using our simple todo App. Start the server by following command
 
 ```bash
+
+newcommit added
 $ python manage.py runserver
 ```
 
