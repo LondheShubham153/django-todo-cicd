@@ -1,8 +1,8 @@
 # django-todo
-A simple todo app built with django
+A simple todo app built with django 
 
 ![todo App](https://raw.githubusercontent.com/shreys7/django-todo/develop/staticfiles/todoApp.png)
-### Setup
+### Setup 
 To get this repository, run the following command inside your git enabled terminal
 ```bash
 $ git clone https://github.com/shreys7/django-todo.git
@@ -15,7 +15,7 @@ Once you have downloaded django, go to the cloned repo directory and run the fol
 $ python manage.py makemigrations
 ```
 
-This will create all the migrations file (database migrations) required to run this App.
+This will create all the migrations file (database migrations) required to run this Application.
 
 Now, to apply this migrations run the following command
 ```bash
