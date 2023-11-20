@@ -1,0 +1,93 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define environment variables needed for the pipeline
+        DJANGO_SETTINGS_MODULE = 'your_project.settings' // Replace with your Django project's settings module
+        VENV_DIR = 'venv' // Replace with the path to your virtual environment
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from the Git repository
+                checkout scm
+            }
+        }
+
+        stage('Setup Virtual Environment') {
+            steps {
+                // Create and activate a virtual environment
+                sh '''
+                    python -m venv $VENV_DIR
+                    source $VENV_DIR/bin/activate
+                '''
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Install Python dependencies
+                sh 'pip install -r requirements.txt'
+            }
+        }
+
+        stage('Database Migration') {
+            steps {
+                // Perform Django database migrations
+                sh 'python manage.py migrate'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                // Run Django tests
+                sh 'python manage.py test'
+            }
+        }
+
+        stage('Collect Static Files') {
+            steps {
+                // Collect static files for production
+                sh 'python manage.py collectstatic --noinput'
+            }
+        }
+
+        stage('Deploy to Production') {
+            when {
+                // Add conditions for when to deploy (e.g., after successful tests)
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
+            steps {
+                // Your deployment steps go here, such as copying files to the production server, running migrations, etc.
+                // You may use tools like Docker, Ansible, or custom scripts for deployment.
+                // Example:
+                sh '''
+                    ssh user@production-server "cd /path/to/your/app && git pull origin main"
+                    ssh user@production-server "cd /path/to/your/app && source $VENV_DIR/bin/activate && python manage.py migrate"
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            // Perform actions after a successful build (e.g., notifications)
+            // Example:
+            emailext(
+                subject: 'Django TODO App CI/CD - Build Successful',
+                body: 'The Jenkins build and deployment were successful.',
+                to: 'asiflpu2020@gmail.com',
+            )
+        }
+        failure {
+            // Perform actions after a failed build (e.g., notifications)
+            // Example:
+            emailext(
+                subject: 'Django TODO App CI/CD - Build Failed',
+                body: 'The Jenkins build or deployment has failed.',
+                to: 'asiflpu2020@gmial.com',
+            )
+        }
+    }
+}
