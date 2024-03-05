@@ -15,6 +15,9 @@ Once you have downloaded django, go to the cloned repo directory and run the fol
 $ python manage.py makemigrations
 ```
 
+______
+
+
 This will create all the migrations file (database migrations) required to run this App.
 
 Now, to apply this migrations run the following command
